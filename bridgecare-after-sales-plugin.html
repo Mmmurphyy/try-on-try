@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BridgeCare | After-sales communication plugin</title>
+  <style>
+    :root { --ink:#14213d; --muted:#667085; --line:#e7ebf2; --paper:#f7f9fc; --orange:#ff6b25; --deep:#ee4d2d; --mint:#e9faf4; --green:#087d5b; --blue:#276ef1; --purple:#6547d8; --shadow:0 18px 45px rgba(19, 33, 61, .10); }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family: Inter, "PingFang HK", "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; color:var(--ink); background:var(--paper); }
+    button { font:inherit; cursor:pointer; }
+    .topbar { height:42px; padding:0 max(24px, calc((100vw - 1180px)/2)); display:flex; align-items:center; justify-content:space-between; color:#657086; font-size:12px; background:#fff; border-bottom:1px solid var(--line); }
+    .topbar span + span { margin-left:19px; }
+    .nav { max-width:1180px; height:78px; margin:auto; display:flex; align-items:center; justify-content:space-between; }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:-.5px; font-size:20px; }
+    .mark { display:grid; place-items:center; width:34px; height:34px; color:#fff; background:linear-gradient(135deg,#ff7b2c,#ff4e30); border-radius:10px 10px 10px 3px; font-size:17px; }
+    .nav-links { display:flex; align-items:center; gap:28px; font-size:14px; color:#4d5870; }
+    .nav-links b { color:var(--ink); }
+    .login { border:0; color:#fff; background:var(--ink); border-radius:9px; padding:10px 16px; font-weight:700; }
+    .hero { max-width:1180px; margin:0 auto 36px; border-radius:24px; padding:52px 56px 43px; overflow:hidden; position:relative; color:#fff; background:linear-gradient(108deg,#14213d 0%,#1d3158 61%,#203b6b 100%); }
+    .hero:after { content:""; position:absolute; width:520px; height:520px; border:70px solid rgba(255,255,255,.055); right:-150px; top:-240px; border-radius:50%; }
+    .eyebrow { color:#ffc7a9; font-weight:700; font-size:12px; letter-spacing:1.15px; text-transform:uppercase; }
+    h1 { font-size:42px; line-height:1.16; letter-spacing:-1.5px; margin:12px 0 15px; max-width:650px; }
+    .hero p { max-width:565px; line-height:1.7; color:#d5deef; margin:0; font-size:16px; }
+    .hero-actions { display:flex; align-items:center; gap:13px; margin-top:26px; }
+    .primary { border:0; border-radius:10px; padding:13px 18px; background:var(--orange); color:#fff; font-weight:800; box-shadow:0 8px 20px rgba(255,107,37,.22); }
+    .secondary { color:#e5ebf7; padding:12px 18px; border-radius:10px; border:1px solid rgba(255,255,255,.28); background:transparent; font-weight:700; }
+    .hero-proof { position:absolute; right:61px; bottom:46px; display:flex; align-items:center; gap:10px; z-index:1; color:#f2f5fb; font-size:13px; }
+    .avatar-stack { display:flex; }
+    .avatar { width:28px; height:28px; border-radius:50%; border:2px solid #26416e; margin-left:-7px; display:grid; place-items:center; font-size:12px; background:#f8c7a5; color:#604130; }
+    .avatar:first-child { margin-left:0; background:#8bd5c0; color:#115b4b; }
+    .avatar:last-child { background:#bed2ff; color:#26447f; }
+    main { max-width:1180px; margin:auto; padding-bottom:62px; }
+    .workspace { display:grid; grid-template-columns:360px 1fr; gap:22px; align-items:start; }
+    .panel { background:#fff; border:1px solid var(--line); border-radius:18px; box-shadow:0 4px 16px rgba(22,37,65,.035); }
+    .new-case { padding:23px; }
+    .section-label { color:var(--muted); font-size:12px; font-weight:800; letter-spacing:.9px; text-transform:uppercase; }
+    h2 { font-size:21px; margin:7px 0 5px; letter-spacing:-.45px; }
+    .subtext { margin:0 0 19px; font-size:13px; line-height:1.55; color:var(--muted); }
+    .order { padding:13px 14px; border-radius:11px; background:#f7f9fd; border:1px solid #eaf0fa; display:flex; gap:11px; align-items:center; margin-bottom:19px; }
+    .order-thumb { width:38px; height:38px; display:grid; place-items:center; border-radius:9px; background:#ffe6d8; font-size:19px; }
+    .order strong { font-size:13px; display:block; }
+    .order small { color:var(--muted); font-size:11px; }
+    .issue-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+    .issue { min-height:74px; padding:10px; text-align:left; border:1px solid var(--line); border-radius:11px; background:#fff; transition:.16s ease; color:#465069; font-size:12px; line-height:1.35; }
+    .issue:hover,.issue.active { color:var(--deep); border-color:#ffb693; background:#fff7f3; transform:translateY(-1px); }
+    .issue i { display:block; font-style:normal; font-size:18px; margin-bottom:5px; }
+    .open-case { width:100%; margin-top:16px; padding:12px; border:0; border-radius:10px; background:var(--ink); color:#fff; font-weight:800; }
+    .privacy { margin-top:15px; font-size:11px; line-height:1.55; color:var(--muted); display:flex; gap:7px; }
+    .case-stage { padding:0; overflow:hidden; }
+    .stage-top { padding:20px 25px 17px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
+    .case-title { display:flex; align-items:center; gap:11px; }
+    .case-title .case-icon { width:36px; height:36px; background:#fff0e9; border-radius:10px; display:grid; place-items:center; }
+    .case-title h3 { margin:0; font-size:15px; }
+    .case-title p { margin:3px 0 0; color:var(--muted); font-size:12px; }
+    .status { border:0; border-radius:99px; padding:7px 11px; background:#eaf8f2; color:var(--green); font-weight:800; font-size:12px; }
+    .steps { padding:15px 24px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
+    .step { display:flex; align-items:center; gap:7px; font-size:11px; color:#8992a3; font-weight:700; }
+    .step:after { content:""; width:34px; height:1px; margin-left:5px; background:#dee5ef; }
+    .step:last-child:after { display:none; }
+    .dot { height:21px; width:21px; display:grid; place-items:center; border-radius:50%; background:#edf1f7; color:#99a4b8; font-size:11px; }
+    .done { color:var(--green); }.done .dot { color:#fff; background:var(--green); }.current { color:var(--blue); }.current .dot { color:#fff; background:var(--blue); }
+    .communication { display:grid; grid-template-columns:1.35fr .85fr; min-height:393px; }
+    .chat { padding:20px 23px; border-right:1px solid var(--line); }
+    .chat-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+    .participants { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:700; }
+    .live { color:var(--green); font-weight:800; font-size:11px; }.live:before { content:""; display:inline-block; width:7px; height:7px; background:#23a67d; margin-right:5px; border-radius:50%; }
+    .message { max-width:83%; margin:0 0 13px; }
+    .message .who { color:#7c879b; margin:0 0 4px; font-size:11px; font-weight:700; }
+    .bubble { padding:10px 12px; display:inline-block; border-radius:3px 12px 12px 12px; background:#f1f4f8; color:#2e3c55; font-size:13px; line-height:1.45; }
+    .message.you { margin-left:auto; text-align:right; }.message.you .bubble { text-align:left; border-radius:12px 3px 12px 12px; background:#e9f0ff; color:#244d9b; }.message.merchant .bubble { background:#fff3ed; color:#8a3d1d; }
+    .translated { margin-top:5px; font-size:10px; color:#8a95a7; }.translated b { color:#53637e; }
+    .composer { margin-top:18px; border:1px solid #dae2ef; padding:5px 5px 5px 13px; border-radius:11px; display:flex; align-items:center; gap:8px; }.composer input { flex:1; border:0; outline:0; min-width:0; color:var(--ink); }.composer button { width:31px; height:31px; border:0; border-radius:8px; background:var(--blue); color:#fff; font-weight:700; }
+    .ai { padding:20px; background:#fbfcff; }.ai-card { border:1px solid #e0ddfa; border-radius:13px; padding:15px; background:linear-gradient(150deg,#faf9ff,#fff); }.ai-top { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:800; }.spark { display:grid; place-items:center; width:24px; height:24px; border-radius:7px; background:#eeeafd; color:var(--purple); }.tag { margin-left:auto; padding:4px 7px; border-radius:99px; background:#f0edfe; color:var(--purple); font-size:10px; }.ai-card p { color:#59647a; font-size:12px; line-height:1.55; margin:12px 0; }.liability { display:flex; gap:7px; align-items:center; font-size:11px; }.meter { height:7px; overflow:hidden; flex:1; background:#edf0f5; border-radius:6px; }.meter b { display:block; height:100%; width:67%; background:linear-gradient(90deg,#ff8b60,#ff6652); border-radius:6px; }.solution { margin-top:15px; padding:13px; border-radius:11px; background:var(--mint); }.solution strong { display:block; font-size:12px; color:#126a51; }.solution p { margin:5px 0 0; color:#397463; font-size:11px; line-height:1.45; }.solution button { margin-top:10px; border:0; color:#fff; background:var(--green); padding:8px 10px; border-radius:7px; font-size:11px; font-weight:800; }
+    .callout { margin-top:22px; padding:21px 25px; display:grid; grid-template-columns:auto 1fr auto; gap:15px; align-items:center; border-radius:16px; color:#fff; background:linear-gradient(105deg,#ff6940,#ee4d2d); box-shadow:0 12px 23px rgba(238,77,45,.18); }.callout .big { font-size:26px; }.callout strong { font-size:15px; }.callout p { margin:3px 0 0; color:#ffe3dc; font-size:12px; }.callout button { border:0; background:#fff; color:#d9462c; padding:10px 14px; border-radius:9px; font-size:12px; font-weight:800; }
+    .value { margin-top:38px; }.value-header { display:flex; justify-content:space-between; align-items:end; }.value-header p { margin:0; color:var(--muted); font-size:13px; }.benefits { display:grid; grid-template-columns:repeat(3,1fr); gap:17px; margin-top:17px; }.benefit { padding:21px; background:#fff; border:1px solid var(--line); border-radius:14px; }.benefit .benefit-icon { width:38px; height:38px; border-radius:11px; display:grid; place-items:center; font-size:19px; margin-bottom:12px; background:#eaf0ff; }.benefit:nth-child(2) .benefit-icon { background:#e9faf4; }.benefit:nth-child(3) .benefit-icon { background:#fff0e8; }.benefit h3 { font-size:14px; margin:0 0 7px; }.benefit p { color:var(--muted); margin:0; font-size:12px; line-height:1.55; }
+    .toast { position:fixed; bottom:24px; left:50%; transform:translate(-50%,120px); opacity:0; z-index:4; padding:12px 16px; color:#fff; background:#1e2d4a; border-radius:10px; box-shadow:var(--shadow); font-size:13px; transition:.25s ease; }.toast.show { transform:translate(-50%,0); opacity:1; }
+    @media (max-width:800px) { .topbar { padding:0 17px; }.topbar .right, .nav-links { display:none; }.nav { padding:0 18px; }.hero { border-radius:0; padding:40px 23px 112px; }.hero-proof { left:24px; right:auto; bottom:35px; }.workspace { grid-template-columns:1fr; padding:0 16px; }.communication { grid-template-columns:1fr; }.chat { border-right:0; border-bottom:1px solid var(--line); }.benefits { grid-template-columns:1fr; }.value { padding:0 16px; }.callout { grid-template-columns:auto 1fr; margin:22px 16px 0; }.callout button { grid-column:1/-1; }.steps { overflow:auto; gap:16px; }.step { white-space:nowrap; }.step:after { width:15px; } h1 { font-size:33px; } }
+  </style>
+</head>
+<body>
+  <div class="topbar"><div><span>For delivery & logistics platforms</span><span>香港售后沟通插件</span></div><div class="right"><span>繁體中文</span><span>English</span><span>帮助中心</span></div></div>
+  <nav class="nav"><div class="brand"><div class="mark">↔</div>BridgeCare</div><div class="nav-links"><b>解决方案</b><span>平台整合</span><span>数据安全</span><span>开发者</span><button class="login" onclick="notify('演示登录已准备好')">平台登录</button></div></nav>
+  <header class="hero"><div class="eyebrow">One order. One trusted channel.</div><h1>售后不该让任何一方<br>“找不到人”。</h1><p>BridgeCare 是嵌入式售后服务插件：为消费者、商家与骑手建立一个带即时翻译、匿名通话与公平调解的临时沟通空间。</p><div class="hero-actions"><button class="primary" onclick="document.querySelector('.workspace').scrollIntoView({behavior:'smooth'})">体验售后处理</button><button class="secondary" onclick="notify('整合说明已加入演示待办')">查看平台整合方式</button></div><div class="hero-proof"><div class="avatar-stack"><div class="avatar">顾</div><div class="avatar">店</div><div class="avatar">骑</div></div><span>三方在同一订单空间实时协作</span></div></header>
+  <main>
+    <section class="workspace">
+      <aside class="panel new-case"><div class="section-label">Start a case</div><h2>这笔订单发生了什么？</h2><p class="subtext">选择问题后，系统会建立仅限本订单的沟通渠道。</p><div class="order"><div class="order-thumb">🥡</div><div><strong>订单 #HK-240928-018</strong><small>九龙塘 · 已显示送达 18:42</small></div></div><div class="issue-grid">
+        <button class="issue active" data-issue="找不到外卖"><i>📍</i>找不到外卖</button><button class="issue" data-issue="拿错物品"><i>🛍️</i>拿错物品</button><button class="issue" data-issue="送错地点"><i>🧭</i>骑手送错地点</button><button class="issue" data-issue="餐品有缺漏"><i>🍜</i>餐品有缺漏</button>
+      </div><button class="open-case" id="openCase">建立三方沟通</button><div class="privacy"><span>🔒</span><span>订单外不保留联系方式；通话均以平台保护号码接通。</span></div>
+      </aside>
+      <section class="panel case-stage">
+        <div class="stage-top"><div class="case-title"><div class="case-icon">💬</div><div><h3 id="caseHeading">售后个案：找不到外卖</h3><p>订单 #HK-240928-018 · 临时沟通空间</p></div></div><button class="status">● 处理中</button></div>
+        <div class="steps"><div class="step done"><span class="dot">✓</span>个案建立</div><div class="step current"><span class="dot">2</span>三方沟通</div><div class="step"><span class="dot">3</span>AI 建议</div><div class="step"><span class="dot">4</span>完成处理</div></div>
+        <div class="communication"><div class="chat"><div class="chat-head"><div class="participants"><div class="avatar-stack"><div class="avatar">顾</div><div class="avatar">店</div><div class="avatar">骑</div></div>消费者、商家、骑手</div><span class="live">实时翻译开启</span></div>
+          <div class="message you"><p class="who">你 · 繁體中文</p><div class="bubble">我在大堂和收件柜都找不到订单。</div><p class="translated"><b>English:</b> I can't find the order at the lobby or locker.</p></div>
+          <div class="message"><p class="who">骑手 Ken · English</p><div class="bubble">I left it at the building entrance and took a photo.</div><p class="translated"><b>繁體中文：</b>我把订单放在大楼入口，并已拍照。</p></div>
+          <div class="message merchant"><p class="who">商家 · 繁體中文</p><div class="bubble">我們正在核對出餐與交接時間。</div><p class="translated"><b>English:</b> We are checking the handover time.</p></div>
+          <div class="composer"><span>＋</span><input aria-label="Message" placeholder="输入消息，自动翻译给各方" /><button onclick="notify('消息已安全发送并翻译')">↑</button></div>
+        </div><aside class="ai"><div class="ai-card"><div class="ai-top"><span class="spark">✦</span>BridgeCare AI <span class="tag">可解释建议</span></div><p>已比对送达照片、GPS 时间线和商家出餐纪录。建议先由骑手确认放置位置，并给消费者即时补偿选择。</p><div class="liability"><span>初步责任：配送环节</span><div class="meter"><b></b></div><b>67%</b></div><div class="solution"><strong>建议：全额退款 + HK$20 优惠券</strong><p>适用于无法在 10 分钟内定位订单的情形。各方可查看理由及提出补充证据。</p><button onclick="notify('补偿方案已发送给消费者确认')">发送补偿方案</button></div></div></aside></div>
+      </section>
+    </section>
+    <section class="callout"><div class="big">☎</div><div><strong>需要说清楚？安全拨打匿名电话。</strong><p>电话号码不会向任何一方显示；通话记录仅作为争议证据，在授权与保留期内处理。</p></div><button onclick="notify('正在连接平台保护号码…')">发起安全通话</button></section>
+    <section class="value"><div class="value-header"><div><div class="section-label">Designed for fair resolution</div><h2>从“客服介入”到有证据的共同解决</h2></div><p>适用于 food delivery、same-day delivery 与 logistics 平台</p></div><div class="benefits"><article class="benefit"><div class="benefit-icon">🌐</div><h3>语言不再阻碍处理</h3><p>在同一对话内提供即时双向翻译，并保留原文与译文，减少误解。</p></article><article class="benefit"><div class="benefit-icon">🛡️</div><h3>每个人都被保护</h3><p>订单专属、限时开放的沟通空间，结合保护号码与最小化资料展示。</p></article><article class="benefit"><div class="benefit-icon">⚖️</div><h3>AI 先协助，人类最终把关</h3><p>AI 整理时间、地点与证据，提出可解释的补偿建议；未解决争议可提交人工客服。</p></article></div></section>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+  <script>
+    const toast = document.getElementById('toast'); let timer;
+    function notify(message) { toast.textContent = message; toast.classList.add('show'); clearTimeout(timer); timer=setTimeout(()=>toast.classList.remove('show'),2600); }
+    document.querySelectorAll('.issue').forEach(button => button.addEventListener('click', () => { document.querySelectorAll('.issue').forEach(x=>x.classList.remove('active')); button.classList.add('active'); document.getElementById('caseHeading').textContent='售后个案：'+button.dataset.issue; }));
+    document.getElementById('openCase').addEventListener('click',()=>{ notify('已建立订单专属沟通空间'); document.querySelector('.case-stage').scrollIntoView({behavior:'smooth',block:'center'}); });
+  </script>
+</body>
+</html>
